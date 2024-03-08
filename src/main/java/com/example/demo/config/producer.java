@@ -20,7 +20,7 @@ public class producer {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(
           ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, 
-          "pkc-lq8v7.eu-central-1.aws.confluent.cloud:9092");
+          "localhost:9092");
         configProps.put(
           ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, 
           StringSerializer.class);
