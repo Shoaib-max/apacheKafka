@@ -12,6 +12,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 
+import jakarta.annotation.PostConstruct;
+
 @Configuration
 public class MongoConfig {
 	
@@ -20,9 +22,11 @@ public class MongoConfig {
 
     @Value("${mongo.database.name}")
     private String databaseName;
+    
+    MongoClient clients;
 	
-	 	@Bean
-	    public MongoClient mongoClient() {
+	 	@PostConstruct
+	    public void  mongoClient() {
 	        ConnectionString connStr = new ConnectionString(mongoUrl);
 
 	        MongoClientSettings settings = MongoClientSettings.builder()
@@ -34,12 +38,12 @@ public class MongoConfig {
 	                        .serverSelectionTimeout(10, TimeUnit.SECONDS))
 	                .build();
 
-	        return MongoClients.create(settings);
+	        clients =  MongoClients.create(settings);
 	    }
 
-	    @Bean
-	    public MongoDatabase mongoDatabase(MongoClient mongoClient) {
-	        return mongoClient.getDatabase(databaseName); 
+	    
+	    public MongoDatabase mongoDatabase() {
+	       return clients.getDatabase(databaseName);
 	    }
 
 }
